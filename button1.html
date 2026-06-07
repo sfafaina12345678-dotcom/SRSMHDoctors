@@ -3,135 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freestyle Doctor List - Watch & Earn</title>
-    
-    <!-- HilltopAds Verification Meta - Same as main domain -->
+    <title>Dil Ki Bimari - Watch Ad to Unlock</title>
     <meta name="2c0a772d5feac06a0fb679cfc31a10ab3fbc852" content="2c0a772d5feac06a0fb679cfc31a10ab3fbc852" />
     
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #0f0f0f;
-            color: #fff;
-            margin: 0;
+        body { 
+            font-family: Arial; 
+            background: #0a0a0a; 
+            color: #fff; 
+            margin: 0; 
             padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        h1 {
             text-align: center;
-            color: #00ff88;
         }
-        .video-section {
+        .container { max-width: 600px; margin: 50px auto; }
+        h1 { color: #ff4444; font-size: 28px; }
+        .lock-box {
             background: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
+            border: 2px solid #ff4444;
+            border-radius: 12px;
+            padding: 40px 20px;
+            margin: 30px 0;
         }
-        .doctor-list {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
-        }
-        .btn {
-            background: #00ff88;
-            color: #000;
-            padding: 12px 25px;
+        .unlock-btn {
+            background: linear-gradient(45deg, #ff4444, #ff8844);
+            color: #fff;
+            padding: 18px 40px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            display: block;
-            margin: 20px auto;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255,68,68,0.4);
         }
+        .unlock-btn:hover:not(:disabled) { transform: scale(1.05); }
+        .unlock-btn:disabled { 
+            background: #555; 
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        #vast-container {
+            display: none;
+            margin: 20px 0;
+        }
+        .video-js { width: 100%; height: 350px; border-radius: 8px; }
+        #content { display: none; background: #1a1a1a; padding: 30px; border-radius: 12px; text-align: left; margin-top: 30px; }
+        .timer { color: #00ff88; font-size: 18px; margin: 15px 0; }
+        .cooldown-msg { color: #ff8844; font-size: 16px; margin: 15px 0; display: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎬 Freestyle Doctor Videos</h1>
-        <p style="text-align:center;">Watch videos below to unlock full doctor list</p>
+        <h1>🔒 Dil Ki Bimari - Locked Content</h1>
         
-        <!-- HilltopAds Multi Video Slider -->
-        <div class="video-section">
-            <h3>Featured Videos</h3>
-            <!-- Multi Video Slider Code -->
-            <script>
-            (function(xirn){
-            var d = document,
-                s = d.createElement('script'),
-                l = d.scripts[d.scripts.length - 1];
-            s.settings = xirn || {};
-            s.src = "\/\/quarrelsomebitter.com\/bUXkVJsWd.G\/le0\/Y-WCcO\/Be-m\/9yudZVUMlkktPMTdc\/x\/MvTlULyKMgjZkytnNEzMEgxMNrTKIXzFMJwK";
-            s.async = true;
-            s.referrerPolicy = 'no-referrer-when-downgrade';
-            l.parentNode.insertBefore(s, l);
-            })({})
-            </script>
-        </div>
-        
-        <!-- VAST 3.0 Player Section -->
-        <div class="video-section">
-            <h3>Sponsored Video</h3>
-            <div id="vast-player">
-                <!-- Agar tera player hai to yaha laga, nahi to Hilltop ka video slider hi VAST use kar leta hai -->
-                <p style="color:#888;">VAST 3.0 Ad Loading... Auto play in 3 sec</p>
-            </div>
-            <!-- VAST 3.0 Direct Link - Video player me use hota hai -->
-            <!-- Tera VAST URL: https://mellow-habit.com/dRmUFUzZd.GpNkvVZPGvUz/qeUmE9quiZKUWljkXPET/cWxDMTTTUvyIMPjVEGtANUziEIxQNXTHIWy_NUQq -->
-        </div>
-        
-        <!-- Doctor List Content -->
-        <div class="doctor-list">
-            <h3>🔥 Top Doctors List 2026</h3>
-            <p>1. Dr. Sharma - Cardiologist</p>
-            <p>2. Dr. Verma - Neurologist</p>
-            <p>3. Dr. Khan - Dermatologist</p>
-            <p>Loading more doctors...</p>
+        <!-- Step 1: Lock Screen -->
+        <div class="lock-box" id="lockScreen">
+            <h2>⚠️ Important Heart Disease Information</h2>
+            <p>Ye information unlock karne ke liye poori video ad dekhni padegi</p>
+            <p style="color:#ff4444;">⚠️ Skip karne pe unlock nahi hoga</p>
             
-            <button class="btn" onclick="window.open('https://google.com','_blank')">
-                View Full List
+            <button class="unlock-btn" id="watchAdBtn" onclick="startAd()">
+                🎬 Watch Ads to Unlock Dil Ki Bimari Page
+            </button>
+            
+            <div class="cooldown-msg" id="cooldownMsg"></div>
+            
+            <p style="font-size:12px; color:#666; margin-top:20px;">
+                Ad complete hone ke baad hi content unlock hoga. 24 ghante me 1 baar.
+            </p>
+        </div>
+        
+        <!-- Step 2: VAST Ad Player -->
+        <div id="vast-container">
+            <h3>Ad Playing... Do Not Close</h3>
+            <div class="timer">Time Left: <span id="countdown">--</span>s</div>
+            <video 
+                id="vast-player" 
+                class="video-js vjs-default-skin" 
+                controls 
+                preload="auto"
+                data-setup='{}'>
+            </video>
+            <p style="color:#ff4444; font-size:14px;">⚠️ Tab close ya skip karne pe unlock nahi milega</p>
+        </div>
+        
+        <!-- Step 3: Unlocked Content -->
+        <div id="content">
+            <h2 style="color:#00ff88;">✅ Unlocked: Dil Ki Bimari Ki Jankari</h2>
+            <h3>1. Heart Attack Ke Lakshan:</h3>
+            <p>✓ Seene me dard ya jalan<br>
+               ✓ Saans phoolna<br>
+               ✓ Thakan aur chakkar<br>
+               ✓ Pasina aana</p>
+               
+            <h3>2. Bachav Ke Upay:</h3>
+            <p>✓ Daily 30 min walk kare<br>
+               ✓ Tel-masala kam khaye<br>
+               ✓ Smoking band kare<br>
+               ✓ Regular checkup karaye</p>
+               
+            <h3>3. Top Heart Doctors:</h3>
+            <p>1. Dr. Sharma - AIIMS Delhi<br>
+               2. Dr. Verma - Fortis Mumbai<br>
+               3. Dr. Khan - Apollo Chennai</p>
+               
+            <button class="unlock-btn" onclick="window.open('https://google.com','_blank')">
+                Book Appointment Now
             </button>
         </div>
     </div>
 
-    <!-- Firestore Score Code - /free se aaya to +5 -->
-    <script type="module">
-      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
-      import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
-      
-      const firebaseConfig = {
-        apiKey: "TERA_API_KEY_YAHA_DAAL",
-        authDomain: "srsmhdoctors-score.firebaseapp.com",
-        projectId: "srsmhdoctors-score",
-      };
-      
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      
-      let userId = localStorage.getItem('userId');
-      if(!userId){
-          userId = 'user_' + Date.now() + Math.random().toString(36).substr(2, 9);
-          localStorage.setItem('userId', userId);
-      }
-      
-      let addScore = 0;
-      let ref = document.referrer;
-      if(ref.includes('/free')) addScore = 5;
-      else if(ref.includes('/about')) addScore = 3;
-      
-      if(addScore > 0){
-          const userRef = doc(db, "users", userId);
-          getDoc(userRef).then(userSnap => {
-              if(userSnap.exists()){
-                  updateDoc(userRef, {score: increment(addScore)});
-              } else {
-                  setDoc(userRef, {score: addScore, createdAt: new Date()});
-              }
-          });
-      }
+    <!-- Hilltop Multi Video Slider - Extra Earning -->
+    <div style="margin-top:50px;">
+        <script>
+        (function(xirn){
+        var d = document,
+            s = d.createElement('script'),
+            l = d.scripts[d.scripts.length - 1];
+        s.settings = xirn || {};
+        s.src = "\/\/quarrelsomebitter.com\/bUXkVJsWd.G\/le0\/Y-WCcO\/Be-m\/9yudZVUMlkktPMTdc\/x\/MvTlULyKMgjZkytnNEzMEgxMNrTKIXzFMJwK";
+        s.async = true;
+        s.referrerPolicy = 'no-referrer-when-downgrade';
+        l.parentNode.insertBefore(s, l);
+        })({})
+        </script>
+    </div>
+
+    <!-- Video.js + VAST -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/7.5.1/videojs.ads.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/2.2.0/videojs.ima.min.js"></script>
+    
+    <script>
+        let player;
+        let adCompleted = false;
+        let adDuration = 30;
+        const COOLDOWN_HOURS = 24;
+        
+        // 1. Page load pe cooldown check karo
+        function checkCooldown(){
+            const lastUnlock = localStorage.getItem('lastAdWatch');
+            const btn = document.getElementById('watchAdBtn');
+            const msg = document.getElementById('cooldownMsg');
+            
+            if(lastUnlock){
+                const diff = Date.now() - parseInt(lastUnlock);
+                const hoursLeft = COOLDOWN_HOURS - (diff / 1000 / 60 / 60);
+                
+                if(hoursLeft > 0){
+                    // Abhi cooldown me hai
+                    btn.disabled = true;
+                    btn.innerText = '🔒 Locked - Wait 24 Hours';
+                    msg.style.display = 'block';
+                    msg.innerText = `Next unlock in: ${Math.ceil(hoursLeft)} hours`;
+                    
+                    // Agar already unlocked tha to content dikha do
+                    if(localStorage.getItem('heartUnlocked') === 'true'){
+                        document.getElementById('lockScreen').style.display = 'none';
+                        document.getElementById('content').style.display = 'block';
+                    }
+                    return false;
+                }
+            }
+            return true; // Cooldown khatam, ad dekh sakta hai
+        }
+        
+        checkCooldown();
+        
+        function startAd(){
+            if(!checkCooldown()) return;
+            
+            // Button disable
+            document.getElementById('watchAdBtn').disabled = true;
+            document.getElementById('watchAdBtn').innerText = 'Loading Ad...';
+            
+            // Screen switch
+            document.getElementById('lockScreen').style.display = 'none';
+            document.getElementById('vast-container').style.display = 'block';
+            
+            // Player init
+            player = videojs('vast-player');
+            var vastTag = 'https://mellow-habit.com/dRmUFUzZd.GpNkvVZPGvUz/qeUmE9quiZKUWljkXPET/cWxDMTTTUvyIMPjVEGtANUziEIxQNXTHIWy_NUQq';
+            
+            player.ima({
+                adTagUrl: vastTag,
+                debug: false
+            });
+            
+            // Ad start hote hi timer chalu
+            player.on('adstart', function(){
+                let duration = player.ima.getAdsManager().getRemainingTime();
+                adDuration = Math.ceil(duration) || 30;
+                startCountdown();
+            });
+            
+            // Ad COMPLETE hone pe hi unlock - SKIP PE NAHI
+            player.on('adend', function(){
+                adCompleted = true;
+                unlockContent();
+            });
+            
+            // Error ya skip pe unlock NAHI hoga
+            player.on('adserror', function(){
+                alert('Ad load nahi hui. Page refresh karke dubara try kare.');
+                location.reload();
+            });
+            
+            player.on('adskip', function(){
+                alert('Ad skip karne pe unlock nahi milega! Poori ad dekho.');
+            });
+            
+            player.ready(function() {
+                player.ima.requestAds();
+                player.play();
+            });
+        }
+        
+        function startCountdown(){
+            let time = adDuration;
+            document.getElementById('countdown').innerText = time;
+            let timer = setInterval(function(){
+                time--;
+                document.getElementById('countdown').innerText = time;
+                if(time <= 0){
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+        
+        function unlockContent(){
+            if(!adCompleted) {
+                alert('Ad poori nahi dekhi! Unlock nahi milega.');
+                return;
+            }
+            
+            // 24 ghante ka cooldown set kar do
+            localStorage.setItem('lastAdWatch', Date.now().toString());
+            localStorage.setItem('heartUnlocked', 'true');
+            
+            // Player hide, content show
+            document.getElementById('vast-container').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('content').scrollIntoView({behavior: 'smooth'});
+        }
+        
+        // Tab close karne pe warning
+        window.addEventListener('beforeunload', function(e){
+            if(document.getElementById('vast-container').style.display === 'block' && !adCompleted){
+                e.preventDefault();
+                e.returnValue = 'Ad chal rahi hai. Close karne pe unlock nahi milega!';
+            }
+        });
     </script>
 </body>
 </html>
