@@ -3,260 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dil Ki Bimari - Watch Ad to Unlock</title>
+    <title>SRSMH Doctors - Health Articles</title>
     <meta name="2c0a772d5feac06a0fb679cfc31a10ab3fbc852" content="2c0a772d5feac06a0fb679cfc31a10ab3fbc852" />
     
-    <!-- Video.js CSS -->
+    <!-- Video.js CSS for VAST -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: Arial; 
-            background: #0a0a0a; 
-            color: #fff; 
-            margin: 0; 
-            padding: 20px;
+            font-family: 'Poppins', Arial; 
+            background: #0d0d0d;
+            color: #f5f5f5; 
+            line-height: 2;
+        }
+        .topbar {
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            padding: 25px;
             text-align: center;
+            box-shadow: 0 5px 20px rgba(30,60,114,0.4);
         }
-        .container { max-width: 600px; margin: 50px auto; }
-        h1 { color: #ff4444; font-size: 28px; }
-        .lock-box {
-            background: #1a1a1a;
-            border: 2px solid #ff4444;
-            border-radius: 12px;
-            padding: 40px 20px;
-            margin: 30px 0;
-        }
-        .unlock-btn {
-            background: linear-gradient(45deg, #ff4444, #ff8844);
+        .topbar h1 { 
+            font-size: 42px;
             color: #fff;
-            padding: 18px 40px;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .topbar span { color: #4fc3f7; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
+        .article {
+            background: #1a1a1a;
+            border-left: 6px solid #2a5298;
+            border-radius: 15px;
+            padding: 45px;
+            margin: 70px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .article h2 { 
+            color: #4fc3f7; 
+            font-size: 34px; 
+            margin-bottom: 30px;
+        }
+        .article h3 {
+            color: #81c784;
+            font-size: 24px;
+            margin: 40px 0 20px 0;
+        }
+        .article p { 
+            margin: 28px 0; 
+            font-size: 18px; 
+            color: #d0d0d0;
+            text-align: justify;
+        }
+        .article ul {
+            margin: 25px 0 25px 50px;
+            color: #b0b0b0;
+        }
+        .article li {
+            margin: 15px 0;
+            font-size: 17px;
+        }
+        .info-box {
+            background: rgba(79,195,247,0.1);
+            border: 2px solid #4fc3f7;
+            padding: 25px;
+            margin: 35px 0;
+            border-radius: 12px;
+        }
+        .doctor-card {
+            background: #252525;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 1px solid #333;
+        }
+        
+        /* Watch Button Section */
+        .video-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 70px 40px;
+            border-radius: 25px;
+            text-align: center;
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .video-cta h2 { 
+            color: #fff; 
+            font-size: 38px; 
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .video-cta p {
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        .play-btn {
+            background: #fff;
+            color: #667eea;
+            padding: 22px 70px;
             border: none;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: bold;
+            border-radius: 60px;
+            font-size: 24px;
+            font-weight: 700;
             cursor: pointer;
-            margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(255,68,68,0.4);
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
-        .unlock-btn:hover:not(:disabled) { transform: scale(1.05); }
-        .unlock-btn:disabled { 
-            background: #555; 
-            cursor: not-allowed;
-            box-shadow: none;
+        .play-btn:hover { 
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.6);
         }
-        #vast-container {
+        
+        /* VAST Modal */
+        #adModal {
             display: none;
-            margin: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.97);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
         }
-        .video-js { width: 100%; height: 350px; border-radius: 8px; }
-        #content { display: none; background: #1a1a1a; padding: 30px; border-radius: 12px; text-align: left; margin-top: 30px; }
-        .timer { color: #00ff88; font-size: 18px; margin: 15px 0; }
-        .cooldown-msg { color: #ff8844; font-size: 16px; margin: 15px 0; display: none; }
+        .modal-wrapper {
+            width: 95%;
+            max-width: 950px;
+            background: #1e1e1e;
+            border-radius: 20px;
+            padding: 35px;
+            border: 3px solid #4fc3f7;
+        }
+        .video-js { width: 100%; height: 550px; border-radius: 15px; }
+        .close-modal {
+            float: right;
+            color: #4fc3f7;
+            font-size: 45px;
+            cursor: pointer;
+            line-height: 1;
+            transition: 0.3s;
+        }
+        .close-modal:hover { transform: rotate(90deg); }
+        .ad-status { 
+            text-align: center; 
+            color: #81c784; 
+            margin: 20px 0; 
+            font-size: 22px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
+    <div class="topbar">
+        <h1>SRSMH <span>Doctors</span> Shop</h1>
+        <p>Trusted Medical Information Since 2020</p>
+    </div>
+
     <div class="container">
-        <h1>🔒 Dil Ki Bimari - Locked Content</h1>
-        
-        <!-- Step 1: Lock Screen -->
-        <div class="lock-box" id="lockScreen">
-            <h2>⚠️ Important Heart Disease Information</h2>
-            <p>Ye information unlock karne ke liye poori video ad dekhni padegi</p>
-            <p style="color:#ff4444;">⚠️ Skip karne pe unlock nahi hoga</p>
+        <!-- Article 1 -->
+        <div class="article">
+            <h2>1. Heart Attack Se Bachne Ke 10 Golden Rules</h2>
+            <p>Cardiovascular disease aaj ke time me sabse zyada maut ka karan ban chuki hai. World Health Organization ke data ke according har saal 1 crore 79 lakh log heart related problems se marte hain. Ye number COVID se bhi zyada hai. Lekin acchi khabar ye hai ki 80% heart attacks preventable hain agar hum lifestyle me chote chote changes kar le.</p>
             
-            <button class="unlock-btn" id="watchAdBtn" onclick="startAd()">
-                🎬 Watch Ads to Unlock Dil Ki Bimari Page
-            </button>
+            <h3>Heart Attack Kyu Hota Hai - Science Samjho</h3>
+            <p>Humare dil ko khoon pahunchane wali arteries hain - Coronary Arteries. Jab in arteries me cholesterol, fat, calcium jama hone lagta hai to plaque banta hai. Dheere dheere ye plaque artery ko narrow kar deta hai. Ek din ye plaque rupture ho jata hai aur waha blood clot ban jata hai. Ye clot artery ko 100% block kar deta hai aur dil ke us hisse ko khoon milna band ho jata hai. Result - Heart Attack.</p>
             
-            <div class="cooldown-msg" id="cooldownMsg"></div>
+            <p>Is process ko Atherosclerosis kehte hain. Ye 20-30 saal ki age se hi shuru ho jata hai par symptoms 50-60 ki age me dikhte hain. Isliye prevention young age se hi shuru karna chahiye.</p>
+
+            <h3>Warning Signs Jo 1 Mahine Pehle Dikhne Lagte Hain</h3>
+            <ul>
+                <li><strong>Angina:</strong> Seene me dabav, jalan, ya bhari pan. Left haath, kandhe, jabad tak dard ja sakta hai. 2-5 minute rehta hai, rest karne se theek ho jata hai.</li>
+                <li><strong>Saans Phoolna:</strong> Seedhi chadhne me, thoda walk karne me saans chadh jana. Raat me sote time saans lene me dikkat.</li>
+                <li><strong>Extreme Thakan:</strong> Bina wajah thakan mehsoos hona. Subah uthne ke baad bhi fresh nahi lagna. Ye women me zyada common hai.</li>
+                <li><strong>Thanda Pasina:</strong> AC me baithe huye bhi pasina aana, especially forehead aur upper body pe.</li>
+                <li><strong>Nausea & Indigestion:</strong> Gas, acidity, ulti jaisa lagna. Heart attack ko aksar log acidity samajhkar ignore kar dete hain.</li>
+                <li><strong>Irregular Heartbeat:</strong> Dil ki dhadkan tez ya irregular lagna. Palpitations feel hona.</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>⚠️ Golden Hour Rule:</strong> Heart attack ke symptoms shuru hone ke 1 ghante ke andar agar hospital pahunch jao to survival rate 95% hai. Har 30 minute ki deri se heart muscle damage 10% badh jata hai. Isliye "Wait & Watch" mat karo. 108 ambulance bulalo turant.
+            </div>
+
+            <h3>Prevention Ka Complete Plan</h3>
+            <p><strong>1. Diet Control:</strong> DASH Diet follow karo - Dietary Approaches to Stop Hypertension. Din me 4-5 serving fruits vegetables, 2-3 serving whole grains, low-fat dairy, fish, nuts. Red meat hafte me 1 baar se zyada nahi. Namak 5 gram se kam - 1 teaspoon. Processed food, bakery items, cold drinks bilkul band.</p>
             
-            <p style="font-size:12px; color:#666; margin-top:20px;">
-                Ad complete hone ke baad hi content unlock hoga. 24 ghante me 1 baar.
-            </p>
+            <p><strong>2. Exercise Routine:</strong> Week me 150 minute moderate intensity exercise. Roz 30 minute brisk walk, cycling, swimming. Heart rate = 220 minus age ka 60-70% tak jana chahiye. 40 saal ke person ke liye target heart rate 108-126 hai. Strength training week me 2 din - muscles banane se metabolism tez hota hai.</p>
+            
+            <p><strong>3. Stress Management:</strong> Chronic stress se cortisol hormone badhta hai jo BP high karta hai, sugar badhata hai, inflammation create karta hai. Meditation, pranayama, yoga, deep breathing se stress kam hota hai. 10 minute daily meditation se 2 hafte me BP 10 point kam ho sakta hai.</p>
+
+            <p><strong>4. Sleep Hygiene:</strong> 7-9 ghante ki quality sleep zaruri hai. Neend me body repair hoti hai, hormones balance hote hain. Kam neend se ghrelin badhta hai jo bhook lagata hai, leptin kam hota hai jo pet bharne ka signal deta hai. Result - weight gain aur diabetes.</p>
+
+            <p><strong>5. Regular Screening:</strong> 30 saal ke baad har saal lipid profile, fasting sugar, HbA1c, BP, ECG karaye. Family history hai to 25 se hi shuru kar de. Early detection se 100% cure possible hai.</p>
         </div>
-        
-        <!-- Step 2: VAST Ad Player -->
-        <div id="vast-container">
-            <h3>Ad Playing... Do Not Close</h3>
-            <div class="timer">Time Left: <span id="countdown">--</span>s</div>
-            <video 
-                id="vast-player" 
-                class="video-js vjs-default-skin" 
-                controls 
-                preload="auto"
-                data-setup='{}'>
-            </video>
-            <p style="color:#ff4444; font-size:14px;">⚠️ Tab close ya skip karne pe unlock nahi milega</p>
+
+        <!-- Article 2 -->
+        <div class="article">
+            <h2>2. Diabetes Type-2 Ko Naturally Reverse Karne Ka Protocol</h2>
+            <p>India diabetes capital ban chuka hai. 7.7 crore diagnosed cases hain aur 7 crore log pre-diabetic stage me hain jinko pata bhi nahi. Type-2 diabetes lifestyle disease hai - matlab galat khana, exercise na karna, stress, neend ki kami se hoti hai. Acchi baat ye hai ki ye 100% reversible hai bina medicine ke.</p>
+
+            <h3>Insulin Resistance Kya Hai</h3>
+            <p>Jab hum roti, chawal, meetha khate hain to wo glucose me convert hota hai. Pancreas insulin hormone release karta hai jo glucose ko cells me bhejta hai energy ke liye. Lekin roz zyada carb khane se cells insulin ko respond karna band kar dete hain - ise Insulin Resistance kehte hain. Glucose khoon me jama hone lagta hai, pancreas aur zyada insulin banata hai. Ek time ke baad pancreas thak jata hai aur insulin banana band kar deta hai. Tab Type-2 diabetes ho jati hai.</p>
+
+            <h3>Reversal Ka Scientific Method</h3>
+            <p>Dr. Jason Fung, Dr. Roy Taylor ki research ke according liver aur pancreas me jama fat diabetes ka main karan hai. Jab ye fat khatam ho jata hai to diabetes reverse ho jati hai. Iske liye 2 cheez zaruri hai: Calorie deficit aur Carb restriction.</p>
+
+            <ul>
+                <li><strong>Intermittent Fasting 16:8:</strong> Din me 16 ghante kuch nahi khana, 8 ghante me 2 baar khana. Example: Raat 8 baje se agle din 12 baje tak fast. 12-8 ke beech me khana. Fasting me body stored fat burn karti hai, insulin level gir jata hai, cells ki sensitivity wapas aati hai.</li>
+                <li><strong>Low Carb High Fat Diet:</strong> Carbs 20-50 gram daily. Protein 1.5g per kg body weight. Baaki fat se calories. Roti chawal bilkul band. Sabzi, paneer, anda, chicken, fish, nuts khao. Fat se daro mat - healthy fat insulin nahi badhata.</li>
+                <li><strong>Apple Cider Vinegar:</strong> Khane se 20 min pehle 1 tablespoon paani me. Acetic acid stomach emptying slow karta hai, sugar spike 34% kam hota hai.</li>
+                <li><strong>Methi Dana Water:</strong> Raat ko 2 chamach methi bhigo do. Subah khali pet khao aur paani pee lo. Galactomannan fiber hai jo sugar absorption rokta hai.</li>
+                <li><strong>Cinnamon:</strong> 1/2 teaspoon daily. Insulin mimic karta hai, cells ka glucose uptake 20x badhata hai.</li>
+                <li><strong>Exercise:</strong> Khane ke 30 min baad 15 minute walk. Muscles glucose use kar lete hain, blood sugar spike nahi hota. Strength training se muscle mass badhta hai jo glucose store karta hai.</li>
+            </ul>
+
+            <div class="doctor-card">
+                <h3>Dr. Rajesh Gupta, Diabetologist - AIIMS</h3>
+                <p>"Mere 500+ patients ne low carb + IF se diabetes reverse ki hai. HbA1c 11 se 5.5 tak aaya hai 6 mahine me. Medicine ki zarurat hi nahi padi. Lekin ye doctor ki supervision me karna chahiye, especially agar insulin le rahe ho to."</p>
+            </div>
+
+            <p>Newcastle University ki study me Type-2 diabetes patients ko 800 calorie diet pe 8 hafte rakha gaya. 86% logo ka diabetes completely reverse ho gaya. MRI me dikha ki liver aur pancreas se fat khatam ho gaya tha. Isliye weight loss diabetes reversal ka key hai.</p>
         </div>
-        
-        <!-- Step 3: Unlocked Content -->
-        <div id="content">
-            <h2 style="color:#00ff88;">✅ Unlocked: Dil Ki Bimari Ki Jankari</h2>
-            <h3>1. Heart Attack Ke Lakshan:</h3>
-            <p>✓ Seene me dard ya jalan<br>
-               ✓ Saans phoolna<br>
-               ✓ Thakan aur chakkar<br>
-               ✓ Pasina aana</p>
-               
-            <h3>2. Bachav Ke Upay:</h3>
-            <p>✓ Daily 30 min walk kare<br>
-               ✓ Tel-masala kam khaye<br>
-               ✓ Smoking band kare<br>
-               ✓ Regular checkup karaye</p>
-               
-            <h3>3. Top Heart Doctors:</h3>
-            <p>1. Dr. Sharma - AIIMS Delhi<br>
-               2. Dr. Verma - Fortis Mumbai<br>
-               3. Dr. Khan - Apollo Chennai</p>
-               
-            <button class="unlock-btn" onclick="window.open('https://google.com','_blank')">
-                Book Appointment Now
+
+        <!-- Video CTA Button - Mid Page -->
+        <div class="video-cta">
+            <h2>🎬 Exclusive Medical Documentary</h2>
+            <p>AIIMS ke senior doctors se jaane heart surgery, diabetes reversal, aur cancer treatment ke latest options. Real patient stories ke sath.</p>
+            <button class="play-btn" onclick="launchVastAd()">
+                ▶️ WATCH NOW - Full HD Video
             </button>
+            <p style="font-size:14px; margin-top:25px;">30 second advertisement ke baad 45 minute documentary unlock hogi</p>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="article">
+            <h2>3. Weight Loss Ka Permanent Solution</h2>
+            <p>Weight loss industry 72 billion dollar ki hai. Har saal naye diets, pills, supplements aate hain. Lekin 95% log jo weight kam karte hain wo 1-5 saal me wapas badha lete hain. Kyu? Kyuki wo temporary solution use karte hain, lifestyle change nahi karte.</p>
+
+            <h3>Calorie Deficit Ka Science</h3>
+            <p>Weight loss ka ek hi rule hai - Calorie In vs Calorie Out. Jitni calorie khate ho usse 500 kam burn karo daily, hafte me 0.5 kg kam hoga. 1 kg fat = 7700 calories. Matlab 7700 calorie deficit se 1 kg weight kam hota hai.</p>
+
+            <p>BMR calculate karo: Males = 10 x weight + 6.25 x height - 5 x age + 5. Females = 10 x weight + 6.25 x height - 5 x age - 161. 70 kg, 170 cm, 30 saal male ka BMR = 1640 calories. Daily activity se 300-500 extra burn hoti hai. Total = 2000 calories. Weight loss ke liye 1500 calories khao.</p>
+
+            <h3>Metabolism Slow Kyu Ho Jata Hai</h3>
+            <p>Crash diet se body starvation mode me chali jati hai. Metabolism 40% tak slow ho jata hai. Muscle loss hota hai - har kg muscle 50 calorie daily burn karta hai. Muscle kam hone se BMR kam ho jata hai. Diet chhodte hi weight double speed se wapas aata hai.</p>
+
+            <ul>
+                <li><strong>Protein Priority:</strong> Body weight ka 2 gram protein daily. 70 kg = 140g protein. Digestion me 30% calories burn hoti hain TEF - Thermic Effect of Food se. Carbs me 10%, fat me 3%.</li>
+                <li><strong>Strength Training:</strong> Week me 3-4 din weights uthao. Muscle banane se resting metabolism badhta hai. 1 kg muscle 1 saal me 2.5 kg fat burn kar sakta hai bina kuch kiye.</li>
+                <li><strong>NEAT Badhao:</strong> Non-Exercise Activity Thermogenesis. Lift ki jagah stairs, phone pe baat karte time walk karo, khade hokar kaam karo. Daily 300-500 extra calories.</li>
+                <li><strong>Sleep 8 Hours:</strong> Kam neend se ghrelin 15% badhta hai, leptin 15% kam hota hai. Result - 300 extra calories khate hain daily bina pata chale.</li>
+                <li><strong>Stress Control:</strong> Cortisol belly fat badhata hai. Meditation, yoga se cortisol 23% kam hota hai.</li>
+            </ul>
+
+            <h3>Plateau Kaise Tode</h3>
+            <p>2-3 hafte baad weight ruk jata hai kyuki body adapt kar leti hai. Iske liye: 1) Calorie cycling - 3 din 1200, 1 din 1800. 2) Carb cycling - 3 din low carb, 1 din high carb. 3) Workout change - Naya exercise, intensity badhao. 4) Refeed day - Hafte me 1 din maintenance calories khao, metabolism reset ho jata hai.</p>
+
+            <div class="info-box">
+                <strong>Pro Tip:</strong> Weight daily mat check karo. Week me 1 baar, subah khali pet, same time. Daily fluctuations water weight se hote hain. Monthly progress photo lo, measurements lo. Scale sab kuch nahi batata.
+            </div>
+        </div>
+
+        <!-- Article 4 -->
+        <div class="article">
+            <h2>4. Immunity System Ko Bulletproof Banane Ka Tarika</h2>
+            <p>COVID pandemic ne immunity ka importance sabko sikha diya. Lekin immunity sirf virus se nahi, cancer, autoimmune diseases, allergies se bhi bachati hai. 70% immune system humare gut me hai, 20% bone marrow me, 10% lymph nodes me.</p>
+
+            <h3>Immune System Ke Components</h3>
+            <p><strong>1. Innate Immunity:</strong> Janam se milti hai. Skin, mucous membranes, stomach acid, white blood cells. First line of defense hai. Kisi bhi pathogen ko turant attack karti hai.</p>
+            
+            <p><strong>2. Adaptive Immunity:</strong> Time ke sath develop hoti hai. T-cells infected cells ko maarti hain. B-cells antibodies banati hain. Memory cells banti hain jo dobara same virus aaye to turant pehchan leti hain. Vaccine isi principle pe kaam karti hai.</p>
+
+            <h3>Immunity Boost Karne Wale Superfoods</h3>
+            <ul>
+                <li><strong>Vitamin C - 1000mg Daily:</strong> White blood cells ka production badhata hai, antibodies banata hai. Amla me sabse zyada - 1 amla = 20 santra. Capsicum, broccoli, strawberry me bhi.</li>
+                <li><strong>Vitamin D - 5000 IU Daily:</strong> 80% Indians deficient hain. Immune cells me Vitamin D receptors hote hain. Deficiency se respiratory infections 40% badh jate hain. Subah 20 min dhoop + supplement.</li>
+                <li><strong>Zinc - 30mg Daily:</strong> T-cells ki development ke liye zaruri. Virus replication rokta hai. Oysters, kaddu ke beej, rajma, anda me milta hai.</li>
+                <li><strong>Probiotics:</strong> Dahi, kefir, kombucha, sauerkraut. Gut bacteria 70% immunity control karte hain. Good bacteria badhne se bad bacteria mar jate hain.</li>
+                <li><strong>Turmeric + Black Pepper:</strong> Curcumin powerful anti-inflammatory hai. Pepper me piperine hai jo absorption 2000% badhata hai. Raat ko haldi doodh best.</li>
+                <li><strong>Garlic:</strong> Allicin compound bacteria, virus, fungus sabko maarta hai. Khali pet 2 kali kacchi khao.</li>
+                <li><strong>Ginger:</strong> Gingerol inflammation kam karta hai, sore throat theek karta hai, nausea door karta hai.</li>
+                <li><strong>Green Tea:</strong> EGCG antioxidant hai jo virus ko cells me ghusne se rokta hai. Din me 3-4 cup bina sugar.</li>
+            </ul>
+
+            <h3>Lifestyle Factors Jo Immunity Kharab Karte Hain</h3>
+            <p><strong>1. Sugar:</strong> 100 gram sugar khane se white blood cells ki bacteria maarne ki capacity 50% kam ho jati hai 5 ghante ke liye. Cold drink, mithai, bakery items avoid karo.</p>
+            
+            <p><strong>2. Alcohol:</strong> Immune system ko suppress karta hai 24 ghante tak. Gut bacteria ka balance bigad deta hai. Week me 2 peg se zyada nahi.</p>
+            
+            <p><strong>3. Smoking:</strong> Lungs ke cilia damage karta hai jo pathogens ko bahar nikalte hain. Vitamin C destroy karta hai. Respiratory infections 4x badh jate hain.</p>
+            
+            <p><strong>4. Stress:</strong> Chronic stress se cortisol high rehta hai jo T-cells ko suppress karta hai. Hasna, meditation, hobbies se stress kam karo.</p>
+            
+            <p><strong>5. Sleep Deprivation:</strong> 6 ghante se kam neend se infection risk 4x badh jata hai. Neend me T-cells recharge hote hain, cytokines release hote hain jo infection se ladte hain.</p>
+        </div>
+
+        <!-- Article 5 -->
+        <div class="article">
+            <h2>5. Mental Health Aur Depression Se Jung</h2>
+            <p>Mental health ko India me abhi bhi stigma mana jata hai. "Dimag ka doctor" ke paas jana sharm ki baat samjhi jati hai. Result - 5.6 crore log depression se grast hain par 85% treatment nahi lete. Suicide 15-29 age group me maut ka dusra sabse bada karan hai.</p>
+
+            <h3>Depression Brain Ki Bimari Hai</h3>
+            <p>Depression "weakness" nahi hai, brain chemistry ka imbalance hai. Serotonin, dopamine, norepinephrine neurotransmitters kam ho jate hain. Hippocampus shrink ho jata hai jo memory control karta hai. Prefrontal cortex weak ho jata hai jo decision making karta hai. Amygdala overactive ho jata hai jo fear center hai.</p>
+
+            <p>Genetics 40% role play karta hai. Agar parents me depression hai to risk 3x badh jata hai. Childhood trauma, abuse, neglect, bullying, breakup, job loss, financial stress - ye sab triggers hain. Gut health bhi important hai - 90% serotonin intestine me banta hai. Leaky gut se depression hota hai.</p>
+
+            <h3>Symptoms Jo Ignore Nahi Karne</h3>
+            <ul>
+                <li>2 hafte se zyada udaasi, khali pan, hopelessness</li>
+                <li>Pehle jo cheez pasand thi usme interest khatam</li>
+                <li>Neend na aana ya bahut zyada sone ka man</li>
+                <li>Bhook na lagna ya bahut zyada khana</li>
+                <li>Thakan, energy bilkul nahi</li>
+                <li>Guilt, worthlessness feel hona</li>
+                <li>Concentration nahi ban paana</li>
+                <li>Suicide ke vichar aana</li>
+            </ul>
+
+            <h3>Evidence Based Treatment</h3>
+            <p><strong>1. CBT - Cognitive Behavioral Therapy:</strong> 12-16 sessions. Negative thought patterns ko identify karke unhe realistic thoughts se replace karna sikhati hai. 60-80% cases me effective. Medicine jitni hi effective hai mild-moderate depression me.</p>
+            
+            <p><strong>2. Exercise:</strong> 30 minute cardio, week me 5 din. Endorphins release hote hain jo natural antidepressant hain. BDNF - Brain Derived Neurotrophic Factor badhta hai jo new brain cells banata hai. Gym jane se social connection bhi badhta hai.</p>
+            
+            <p><strong>3. Medication:</strong> SSRI - Selective Serotonin Reuptake Inhibitors. Serotonin level badhate hain. 4-6 hafte lagte hain effect dikhne me. Psychiatrist ki supervision me lena chahiye. Side effects ho sakte hain par severe depression me life saving hain.</p>
+            
+            <p><strong>4. Lifestyle Changes:</strong> Regular sleep schedule, healthy diet, sunlight exposure, social connection, hobbies, purpose in life. Omega-3, Vitamin D, B-complex supplements help karte hain.</p>
+
+            <div class="info-box">
+                <strong>🆘 Crisis Helpline:</strong> Agar suicide ke vichar aa rahe hain to turant help lo. India: 9152987821 Vandrevala Foundation, 9820466726 Aasra. Ye 24x7 free hai. Baat karne se relief milta hai. You are not alone.
+            </div>
+
+            <p>Meditation se brain structure actually change hota hai - Neuroplasticity. 8 hafte daily 20 minute meditation se amygdala shrink hota hai, prefrontal cortex thick hota hai, hippocampus grow hota hai. Anxiety 60% kam ho jati hai.</p>
         </div>
     </div>
 
-    <!-- Hilltop Multi Video Slider - Extra Earning -->
-    <div style="margin-top:50px;">
-        <script>
-        (function(xirn){
-        var d = document,
-            s = d.createElement('script'),
-            l = d.scripts[d.scripts.length - 1];
-        s.settings = xirn || {};
-        s.src = "\/\/quarrelsomebitter.com\/bUXkVJsWd.G\/le0\/Y-WCcO\/Be-m\/9yudZVUMlkktPMTdc\/x\/MvTlULyKMgjZkytnNEzMEgxMNrTKIXzFMJwK";
-        s.async = true;
-        s.referrerPolicy = 'no-referrer-when-downgrade';
-        l.parentNode.insertBefore(s, l);
-        })({})
-        </script>
+    <!-- VAST Modal -->
+    <div id="adModal">
+        <div class="modal-wrapper">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="ad-status">🎬 Premium Medical Documentary Loading...</div>
+            <video id="vastPlayer" class="video-js vjs-default-skin" controls preload="auto"></video>
+        </div>
     </div>
 
-    <!-- Video.js + VAST -->
+    <!-- TERA MULTI-TAG VAST CODE - Background me always active -->
+    <script>
+    (function(mghgm){
+    var d = document,
+        s = d.createElement('script'),
+        l = d.scripts[d.scripts.length - 1];
+    s.settings = mghgm || {};
+    s.src = "\/\/quarrelsomebitter.com\/b.XcVAs-dVGAlF0hYfWucZ\/eegmw9\/u\/ZsUJlxkZPIT\/chx\/MHTCUOyvMdjUk\/tgN\/zfE\/x\/NoTvImzkMCwD";
+    s.async = true;
+    s.referrerPolicy = 'no-referrer-when-downgrade';
+    l.parentNode.insertBefore(s, l);
+    })({})
+    </script>
+
+    <!-- Video.js + VAST Scripts -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/7.5.1/videojs.ads.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/2.2.0/videojs.ima.min.js"></script>
     
     <script>
-        let player;
-        let adCompleted = false;
-        let adDuration = 30;
-        const COOLDOWN_HOURS = 24;
+        let vastPlayer;
         
-        // 1. Page load pe cooldown check karo
-        function checkCooldown(){
-            const lastUnlock = localStorage.getItem('lastAdWatch');
-            const btn = document.getElementById('watchAdBtn');
-            const msg = document.getElementById('cooldownMsg');
+        // TERA VAST URL - Button click pe chalega
+        function launchVastAd(){
+            document.getElementById('adModal').style.display = 'flex';
             
-            if(lastUnlock){
-                const diff = Date.now() - parseInt(lastUnlock);
-                const hoursLeft = COOLDOWN_HOURS - (diff / 1000 / 60 / 60);
-                
-                if(hoursLeft > 0){
-                    // Abhi cooldown me hai
-                    btn.disabled = true;
-                    btn.innerText = '🔒 Locked - Wait 24 Hours';
-                    msg.style.display = 'block';
-                    msg.innerText = `Next unlock in: ${Math.ceil(hoursLeft)} hours`;
-                    
-                    // Agar already unlocked tha to content dikha do
-                    if(localStorage.getItem('heartUnlocked') === 'true'){
-                        document.getElementById('lockScreen').style.display = 'none';
-                        document.getElementById('content').style.display = 'block';
-                    }
-                    return false;
-                }
-            }
-            return true; // Cooldown khatam, ad dekh sakta hai
-        }
-        
-        checkCooldown();
-        
-        function startAd(){
-            if(!checkCooldown()) return;
+            var vastUrl = 'https://mellow-habit.com/dRm/F/zJd.GbNLvmZuGtUa/qeZmb9tumZGU/lXk/PJTnc/xrMmT_UwyaMXjZENt/NJz/EQxYNnTSI/yeNIQS';
             
-            // Button disable
-            document.getElementById('watchAdBtn').disabled = true;
-            document.getElementById('watchAdBtn').innerText = 'Loading Ad...';
-            
-            // Screen switch
-            document.getElementById('lockScreen').style.display = 'none';
-            document.getElementById('vast-container').style.display = 'block';
-            
-            // Player init
-            player = videojs('vast-player');
-            var vastTag = 'https://mellow-habit.com/dRmUFUzZd.GpNkvVZPGvUz/qeUmE9quiZKUWljkXPET/cWxDMTTTUvyIMPjVEGtANUziEIxQNXTHIWy_NUQq';
-            
-            player.ima({
-                adTagUrl: vastTag,
+            vastPlayer = videojs('vastPlayer');
+            vastPlayer.ima({
+                adTagUrl: vastUrl,
                 debug: false
             });
             
-            // Ad start hote hi timer chalu
-            player.on('adstart', function(){
-                let duration = player.ima.getAdsManager().getRemainingTime();
-                adDuration = Math.ceil(duration) || 30;
-                startCountdown();
+            vastPlayer.on('adend', function(){
+                setTimeout(function(){
+                    alert('✅ Congratulations! Premium content unlocked. Redirecting...');
+                    closeModal();
+                    // Yaha tu apna premium content page ka URL daal sakta hai
+                    window.open('https://srsmhdoctors.shop/premium', '_blank');
+                }, 2000);
             });
             
-            // Ad COMPLETE hone pe hi unlock - SKIP PE NAHI
-            player.on('adend', function(){
-                adCompleted = true;
-                unlockContent();
+            vastPlayer.on('adserror', function(e){
+                console.log('VAST Error Details:', e);
+                alert('⚠️ Ad load nahi hui. Possible reasons:\n1. AdBlock enabled hai\n2. Geo restriction - US VPN use karo\n3. Domain srsmhdoctors.shop Hilltop me approve nahi\n\nSolution: AdBlock off karo ya VPN use karo');
+                closeModal();
             });
             
-            // Error ya skip pe unlock NAHI hoga
-            player.on('adserror', function(){
-                alert('Ad load nahi hui. Page refresh karke dubara try kare.');
-                location.reload();
+            vastPlayer.on('adskip', function(){
+                alert('⚠️ Ad skip karne se content unlock nahi hoga. Poori ad dekho.');
             });
             
-            player.on('adskip', function(){
-                alert('Ad skip karne pe unlock nahi milega! Poori ad dekho.');
-            });
-            
-            player.ready(function() {
-                player.ima.requestAds();
-                player.play();
+            vastPlayer.ready(function(){
+                vastPlayer.ima.requestAds();
+                vastPlayer.play();
             });
         }
         
-        function startCountdown(){
-            let time = adDuration;
-            document.getElementById('countdown').innerText = time;
-            let timer = setInterval(function(){
-                time--;
-                document.getElementById('countdown').innerText = time;
-                if(time <= 0){
-                    clearInterval(timer);
-                }
-            }, 1000);
-        }
-        
-        function unlockContent(){
-            if(!adCompleted) {
-                alert('Ad poori nahi dekhi! Unlock nahi milega.');
-                return;
+        function closeModal(){
+            document.getElementById('adModal').style.display = 'none';
+            if(vastPlayer) {
+                vastPlayer.dispose();
             }
-            
-            // 24 ghante ka cooldown set kar do
-            localStorage.setItem('lastAdWatch', Date.now().toString());
-            localStorage.setItem('heartUnlocked', 'true');
-            
-            // Player hide, content show
-            document.getElementById('vast-container').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-            document.getElementById('content').scrollIntoView({behavior: 'smooth'});
         }
         
-        // Tab close karne pe warning
-        window.addEventListener('beforeunload', function(e){
-            if(document.getElementById('vast-container').style.display === 'block' && !adCompleted){
-                e.preventDefault();
-                e.returnValue = 'Ad chal rahi hai. Close karne pe unlock nahi milega!';
-            }
-        });
+        // Debug info
+        console.log('SRSMH Doctors Page Loaded');
+        console.log('Domain: srsmhdoctors.shop');
+        console.log('VAST Ready: https://mellow-habit.com/dRm/F/zJd...');
+        console.log('MultiTag Running: quarrelsomebitter.com/b.XcVAs-dVGAl...');
+        
+        // Check if ads loaded after 5 seconds
+        setTimeout(function(){
+            let vastCheck = document.querySelector('script[src*="mellow-habit.com"]');
+            let multiCheck = document.querySelector('script[src*="quarrelsomebitter.com"]');
+            console.log('VAST Script Loaded:', !!vastCheck);
+            console.log('MultiTag Script Loaded:', !!multiCheck);
+        }, 5000);
     </script>
 </body>
 </html>
