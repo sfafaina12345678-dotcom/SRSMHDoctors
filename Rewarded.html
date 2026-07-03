@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Ad for Reward</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #0f0f0f; 
+            color: #fff;
+            padding-bottom: 100px;
+        }
+        #header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        #subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        #closeBtn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #00c853;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 0 4px 15px rgba(0,200,83,0.4);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        #closeBtn:active { transform: scale(0.95); }
+        .ad-section {
+            margin: 20px auto;
+            max-width: 350px;
+            text-align: center;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .ad-label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        #content {
+            margin-top: 100px;
+            padding: 10px;
+        }
+        .spacer {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="timer">Wait 25 seconds for your reward</div>
+        <div id="subtitle">Scroll down to support us ❤️</div>
+    </div>
+    
+    <button id="closeBtn" onclick="claimReward()">✕ Claim Reward</button>
+
+    <div id="content">
+        <!-- Social Bar Ad -->
+        <div class="ad-section">
+            <div class="ad-label">Advertisement</div>
+            <script src="https://pl29323390.effectivecpmnetwork.com/9a/82/3a/9a823a98a602c5a52cd5d5714e8bc03e.js"></script>
+        </div>
+
+        <div class="spacer">↓ Keep Scrolling ↓</div>
+
+        <!-- 300x250 Banner Ad #1 -->
+        <div class="ad-section">
+            <div class="ad-label">Sponsored</div>
+            <script>
+                atOptions = {
+                    'key' : 'd05e6f0e5a7ab5eccc05becb81a0efc8',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/d05e6f0e5a7ab5eccc05becb81a0efc8/invoke.js"></script>
+        </div>
+
+        <div class="spacer">↓ More Ads Below ↓</div>
+
+        <!-- Native Ad -->
+        <div class="ad-section">
+            <div class="ad-label">Recommended</div>
+            <script async="async" data-cfasync="false" src="https://pl30184940.effectivecpmnetwork.com/23fa5e3fb1a82b4216cdb0eaf1b9e8b3/invoke.js"></script>
+            <div id="container-23fa5e3fb1a82b4216cdb0eaf1b9e8b3"></div>
+        </div>
+
+        <div class="spacer">↓ Almost There ↓</div>
+
+        <!-- 300x250 Banner Ad #2 -->
+        <div class="ad-section">
+            <div class="ad-label">Advertisement</div>
+            <script>
+                atOptions = {
+                    'key' : 'd05e6f0e5a7ab5eccc05becb81a0efc8',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/d05e6f0e5a7ab5eccc05becb81a0efc8/invoke.js"></script>
+        </div>
+
+        <div class="spacer">✓ Scroll Complete ✓</div>
+    </div>
+
+    <script>
+        let timeLeft = 25;
+        let params = new URLSearchParams(window.location.search);
+        let uid = params.get('uid');
+        let key = params.get('key');
+        let gameUrl = params.get('return') || 'index.html';
+        
+        // Timer
+        let timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = `Wait ${timeLeft} seconds for your reward`;
+            
+            if(timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timer').innerText = 'Reward Ready! 🎉';
+                document.getElementById('subtitle').innerText = 'Click button to claim';
+                document.getElementById('closeBtn').style.display = 'block';
+                stopAutoScroll();
+            }
+        }, 1000);
+
+        // Auto Scroll Speed 2
+        let scrollSpeed = 2;
+        let autoScrollInterval = setInterval(() => {
+            window.scrollBy(0, scrollSpeed);
+            
+            // Agar neeche pahunch gaye to upar se start
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+                window.scrollTo(0, 0);
+            }
+        }, 30);
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+
+        // Reward Claim Function
+        function claimReward() {
+            // Telegram WebApp ke liye
+            if(window.Telegram?.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({
+                    type: 'reward_claimed', 
+                    uid: uid, 
+                    key: key,
+                    timestamp: Date.now()
+                }));
+                Telegram.WebApp.close();
+            } else {
+                // Normal browser ke liye - localStorage me flag set karo
+                localStorage.setItem('reward_' + key, 'claimed');
+                localStorage.setItem('reward_time', Date.now());
+                
+                // Game pe wapas bhej do
+                window.location.href = gameUrl + '?reward=success&key=' + key;
+            }
+        }
+
+        // Agar user back button dabaye to bhi reward mat do
+        window.addEventListener('beforeunload', function(e) {
+            if(timeLeft > 0) {
+                localStorage.setItem('reward_' + key, 'failed');
+            }
+        });
+    </script>
+</body>
+</html>
