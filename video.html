@@ -13,11 +13,11 @@
 <body class="bg-[#0a0a0b] text-white min-h-screen">
 <header class="p-5 border-b border-zinc-800 flex justify-between">
 <h1 class="text-xl font-black">SFA <span class="text-yellow-400">GUNKA</span></h1>
-<span class="text-xs bg-zinc-800 px-3 py-1 rounded-full">LIVE + ADS</span>
+<span class="text-xs bg-zinc-800 px-3 py-1 rounded-full">LIVE</span>
 </header>
 
 <div class="p-4 max-w-6xl mx-auto">
-  <!-- BANNER TOP - ID 2029919 -->
+  <!-- BANNER 2029919 TOP -->
   <div class="flex justify-center my-4 bg-zinc-900 p-2 rounded-xl border border-zinc-800 min-h-[90px]">
     <script async src="https://js.mbidadm.com/static/scripts.js" data-admpid="468708"></script>
     <div data-banner-id="2029919"></div>
@@ -25,7 +25,7 @@
 
   <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">Loading videos...</div>
 
-  <!-- BANNER BOTTOM - ID 2029919 -->
+  <!-- BANNER 2029919 BOTTOM -->
   <div class="flex justify-center my-6 bg-zinc-900 p-2 rounded-xl border border-zinc-800 min-h-[90px]">
     <div data-banner-id="2029919"></div>
   </div>
@@ -38,21 +38,23 @@
       <span id="playerTitle" class="font-bold truncate text-sm">Video</span>
       <button onclick="closePlayer()" class="bg-white text-black w-7 h-7 rounded-full font-bold">X</button>
     </div>
-
-    <!-- VIDEO + INSTREAM WRAPPER -->
     <div id="playerWrapper" class="w-full aspect-video bg-black">
-      <!-- INSTREAM AD - ID 2029920 - VIDEO KE UPAR AYEGA -->
+      <!-- INSTREAM 2029920 -->
       <div data-banner-id="2029920"></div>
       <video id="mainVideo" class="w-full h-full relative z-0" controls playsinline></video>
     </div>
-
-    <div class="p-2 text-center text-[10px] text-zinc-500">Ad will auto skip in 5 sec • Support SFA GUNKA</div>
+    <div class="p-2 text-center text-[10px] text-zinc-500">Ad auto skip in 5 sec</div>
   </div>
 </div>
 
 <script>
 const TOKEN="8895544903:AAHbD3V0yU-4vdXl8Ih_EadrmnZAgJWlHtQ";
+const POPUNDER_LINK="https://bmadss.com/get/?spot_id=2029922&cat=&subid=1642631608";
+
 async function play(file_id,title){
+  // DIRECT LINK POPUNDER - EARNING YAHAN SE
+  window.open(POPUNDER_LINK, '_blank');
+
   document.getElementById('playerModal').classList.remove('hidden');
   document.getElementById('playerTitle').innerText=title;
   try{
@@ -78,7 +80,7 @@ async function loadVideos(){
       let t=(p.caption||"Video").replace(/'/g,"").substring(0,40);
       return `<div class="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800"><div class="aspect-video bg-zinc-800 flex items-center justify-center text-3xl">▶️</div><div class="p-3"><div class="font-bold truncate text-sm">${t}</div><button onclick="play('${p.video.file_id}','${t}')" class="mt-2 w-full bg-yellow-400 text-black py-2 rounded-lg font-bold text-sm">WATCH</button></div></div>`;
     }).join('');
-  }catch(e){document.getElementById('videoGrid').innerHTML="Error loading videos";}
+  }catch(e){document.getElementById('videoGrid').innerHTML="Error loading";}
 }
 loadVideos();
 </script>
