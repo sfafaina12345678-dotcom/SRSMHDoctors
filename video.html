@@ -1,3 +1,5 @@
+
+const TOKEN="8895544903:AAHbD3V0yU-4vdXl8Ih_EadrmnZAgJWlHtQ";
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +7,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SFA GUNKA</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- AdCash Library - Sirf 1 Baar -->
+<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+
+<!-- 1. VIDEO SLIDER - Side Se Video Ad -->
+<script type="text/javascript">
+aclib.runVideoSlider({
+    zoneId: '12410582',
+});
+</script>
+
+<!-- VideoJS CSS for In-stream Ad -->
+<link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@7.5.0/dist/videojs-contrib-ads.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/videojs-ima@2.1.0/dist/videojs-ima.css" rel="stylesheet" />
 <style>
-#playerWrapper{position:relative}
-#playerWrapper [data-banner-id="2029920"]{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center}
+.video-js{width:100% !important;height:100% !important}
 </style>
 </head>
 <body class="bg-[#0a0a0b] text-white min-h-screen">
@@ -17,18 +33,7 @@
 </header>
 
 <div class="p-4 max-w-6xl mx-auto">
-  <!-- BANNER TOP - ID 2029919 -->
-  <div class="flex justify-center my-4 bg-zinc-900 p-2 rounded-xl border border-zinc-800 min-h-[90px]">
-    <script async src="https://js.mbidadm.com/static/scripts.js" data-admpid="468708"></script>
-    <div data-banner-id="2029919"></div>
-  </div>
-
   <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">Loading videos...</div>
-
-  <!-- BANNER BOTTOM - ID 2029919 -->
-  <div class="flex justify-center my-6 bg-zinc-900 p-2 rounded-xl border border-zinc-800 min-h-[90px]">
-    <div data-banner-id="2029919"></div>
-  </div>
 </div>
 
 <!-- PLAYER MODAL -->
@@ -40,32 +45,40 @@
     </div>
 
     <!-- VIDEO + INSTREAM WRAPPER -->
-    <div id="playerWrapper" class="w-full aspect-video bg-black">
-      <!-- INSTREAM AD - ID 2029920 - VIDEO KE UPAR AYEGA -->
-      <div data-banner-id="2029920"></div>
-      <video id="mainVideo" class="w-full h-full relative z-0" controls playsinline></video>
+    <div class="w-full aspect-video bg-black">
+      <video id="mainVideo" class="video-js vjs-default-skin vjs-big-play-centered w-full h-full" controls playsinline></video>
     </div>
 
     <div class="p-2 text-center text-[10px] text-zinc-500">Ad will auto skip in 5 sec • Support SFA GUNKA</div>
   </div>
 </div>
 
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@7.5.0/dist/videojs-contrib-ads.min.js"></script>
+<script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-ima@2.1.0/dist/videojs-ima.min.js"></script>
+
 <script>
 const TOKEN="8895544903:AAHbD3V0yU-4vdXl8Ih_EadrmnZAgJWlHtQ";
+let player = videojs("mainVideo");
+player.ima({
+  adTagUrl: "https://youradexchange.com/video/select.php?r=12410538",
+});
+
 async function play(file_id,title){
   document.getElementById('playerModal').classList.remove('hidden');
   document.getElementById('playerTitle').innerText=title;
   try{
     let res=await fetch(`https://api.telegram.org/bot${TOKEN}/getFile?file_id=${file_id}`);
     let data=await res.json();
-    let v=document.getElementById('mainVideo');
-    v.src=`https://api.telegram.org/file/bot${TOKEN}/${data.result.file_path}`;
-    v.play();
+    player.src({src: `https://api.telegram.org/file/bot${TOKEN}/${data.result.file_path}`, type: 'video/mp4'});
+    player.play();
   }catch(e){alert("Video load error");}
 }
 function closePlayer(){
   document.getElementById('playerModal').classList.add('hidden');
-  let v=document.getElementById('mainVideo'); v.pause(); v.src="";
+  player.pause();
+  player.src("");
 }
 async function loadVideos(){
   try{
